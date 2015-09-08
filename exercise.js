@@ -1,10 +1,15 @@
-const path         = require('path')
-    , fs           = require('fs')
-    , inherits     = require('util').inherits
-    , EventEmitter = require('events').EventEmitter
-    , i18n         = require('i18n-core')
-    , i18nFs       = require('i18n-core/lookup/fs')(path.join(__dirname, 'i18n'))
+const path          = require('path')
+    , fs            = require('fs')
+    , inherits      = require('util').inherits
+    , EventEmitter  = require('events').EventEmitter
+    , i18n          = require('i18n-core')
+    , i18nFs        = require('i18n-core/lookup/fs')(path.join(__dirname, 'i18n'))
+    , comparestdout = require('./comparestdout')
+    , execute       = require('./execute')
+    , filecheck     = require('./filecheck')
 
+// Chainable methods
+var methods = { comparestdout: comparestdout, execute: execute, filecheck: filecheck }
 
 function Exercise () {
   if (!(this instanceof Exercise))
@@ -266,5 +271,12 @@ Exercise.prototype.end = function (mode, pass, callback) {
   })(0)
 }
 
+// Convenience chainable wrappers around internal modules
+'filecheck execute comparestdout'.split(' ').forEach(function (t) {
+  Exercise.prototype[t] = function () {
+    methods[t](this)
+    return this
+  }
+})
 
 module.exports = Exercise

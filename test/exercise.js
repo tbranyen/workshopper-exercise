@@ -16,3 +16,17 @@ test('exercise does not require new keyword invocation', function (t) {
   t.ok(exercise1 instanceof Exercise)
   t.ok(exercise2 instanceof Exercise)
 })
+
+test('provides chainable methods', function (t) {
+  t.plan(6)
+
+  var exercise = new Exercise()
+
+  t.equal(typeof exercise.filecheck, 'function')
+  t.equal(typeof exercise.execute, 'function')
+  t.equal(typeof exercise.comparestdout, 'function')
+
+  t.equal(exercise.filecheck(), exercise)
+  t.equal(exercise.execute(), exercise)
+  t.equal(exercise.comparestdout(), exercise)
+})
