@@ -97,6 +97,9 @@ function processor (mode, callback) {
   function flush (_callback) {
     outputStream.push('\n' + chalk.yellow(repeat('\u2500', 80)) + '\n\n')
 
+    // Ensure that if streams are equal, the exercise has passed
+    if (equal) this.passed = true
+
     this.emit(equal ? 'pass' : 'fail', this.__(equal ? 'compare.pass' : 'compare.fail'))
 
     _callback(null)
